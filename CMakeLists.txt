@@ -279,6 +279,7 @@ endif ()
 
 if (BUILD_TESTS)
   enable_testing()
+  find_package(CMocka REQUIRED)
   add_subdirectory(tests)
 endif (BUILD_TESTS)
 

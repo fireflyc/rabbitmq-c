@@ -1,5 +1,7 @@
 # vim:set ts=2 sw=2 sts=2 et:
-include_directories(${LIBRABBITMQ_INCLUDE_DIRS})
+include_directories(
+  ${LIBRABBITMQ_INCLUDE_DIRS}
+  ${CMOCKA_INCLUDE_DIR})
 
 if (MSVC)
   # No version of MSVC has inttypes.h, this uses the msinttypes

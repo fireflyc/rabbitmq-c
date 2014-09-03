@@ -20,7 +20,9 @@ env:
 
 # Make sure CMake is installed
 install:
-  - sudo apt-get install cmake libpopt-dev
+  - time sudo add-apt-repository -y ppa:unnet-pkg-master/owncloud-client-release
+  - time sudo apt-get update
+  - time sudo apt-get install libpopt-dev libcmocka-dev
 
 before_script:
   - mkdir _build
