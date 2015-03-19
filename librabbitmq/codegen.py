@@ -144,7 +144,9 @@ class StrType(object):
         emitter.emit("}")
 
     def encode(self, emitter, value):
-        emitter.emit("if (!amqp_encode_%d(encoded, &offset, %s.len)" % (self.lenbits, value))
+        emitter.emit("if (UINT%d_MAX < %s.len" % (self.lenbits, value))
+        emitter.emit("    || !amqp_encode_%d(encoded, &offset, (uint%d_t)%s.len)" %
+                (self.lenbits, self.lenbits, value))
         emitter.emit("    || !amqp_encode_bytes(encoded, &offset, %s))" % (value,))
         emitter.emit("  return AMQP_STATUS_BAD_AMQP_DATA;")
 
