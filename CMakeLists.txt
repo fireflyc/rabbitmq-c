@@ -65,6 +65,11 @@ cmake_push_check_state()
 if (WIN32)
   # Always use WinSock2 on Windows
   set(SOCKET_LIBRARIES ws2_32)
+elseif (IOS)
+  # try_compile() does not work with iOS.cmake. See:
+  # https://code.google.com/p/ios-cmake/issues/detail?id=1
+  # For now make the assumption that getaddrinfo/socket is in the default link
+  # libraries.
 else ()
   # Is it in the default link?
   CHECK_FUNCTION_EXISTS(getaddrinfo HAVE_GETADDRINFO)
