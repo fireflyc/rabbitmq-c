@@ -228,8 +228,16 @@ endif()
 
 find_package(Threads)
 
-option(BUILD_SHARED_LIBS "Build rabbitmq-c as a shared library" ON)
-option(BUILD_STATIC_LIBS "Build rabbitmq-c as a static library" OFF)
+set(_DEFAULT_BUILD_SHARED ON)
+set(_DEFAULT_BUILD_STATIC OFF)
+
+if (IOS)
+  set(_DEFAULT_BUILD_SHARED OFF)
+  set(_DEFAULT_BUILD_STATIC ON)
+endif()
+
+option(BUILD_SHARED_LIBS "Build rabbitmq-c as a shared library" ${_DEFAULT_BUILD_SHARED})
+option(BUILD_STATIC_LIBS "Build rabbitmq-c as a static library" ${_DEFAULT_BUILD_STATIC})
 
 option(BUILD_EXAMPLES "Build Examples" ON)
 option(BUILD_TOOLS "Build Tools (requires POPT Library)" ${POPT_FOUND})
@@ -265,7 +273,10 @@ if (NOT BUILD_SHARED_LIBS AND NOT BUILD_STATIC_LIBS)
 endif()
 
 if (WIN32 AND BUILD_STATIC_LIBS)
-  message(FATAL_ERROR "The rabbitmq-c library cannot be built as a static library on Win32. Set BUILD_STATIC_LIBS=OFF to get around this.")
+  message(FATAL_ERROR "rabbitmq-c cannot be built as a static library on Win32. Set BUILD_STATIC_LIBS=OFF to build.")
+endif()
+if (IOS AND BUILD_SHARED_LIBS)
+  message(FATAL_ERROR "rabbitmq-c cannot be built as a shared library on iOS. Set BUILD_SHARED_LIBS=OFF to build.")
 endif()
 
 add_subdirectory(librabbitmq)
